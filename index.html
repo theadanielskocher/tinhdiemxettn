@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tính điểm tốt nghiệp THPT</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #f2f2f2;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 16px;
+      width: 100%;
+      background: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #xetTN {
+      margin-top: 20px;
+      font-size: 20px;
+      text-align: center;
+      font-weight: bold;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Tính điểm xét tốt nghiệp THPT</h2>
+  <label>Điểm Toán:</label>
+  <input type="number" id="toan" min="0" max="10" step="0.01">
+
+  <label>Điểm Ngữ văn:</label>
+  <input type="number" id="van" min="0" max="10" step="0.01">
+
+  <label>Điểm môn Tự chọn 1:</label>
+  <input type="number" id="tc1" min="0" max="10" step="0.01">
+
+  <label>Điểm môn Tự chọn 2 </label>
+  <input type="number" id="tc2" min="0" max="10" step="0.01">
+  <label><input type="checkbox" id="mienTC2"> Miễn thi môn này (dành cho thí sinh được miễn thi môn Ngoại ngữ)</label>
+
+  <label>Điểm trung bình lớp 10:</label>
+  <input type="number" id="tb10" min="0" max="10" step="0.01">
+
+  <label>Điểm trung bình lớp 11:</label>
+  <input type="number" id="tb11" min="0" max="10" step="0.01">
+
+  <label>Điểm trung bình lớp 12:</label>
+  <input type="number" id="tb12" min="0" max="10" step="0.01">
+
+  <label>Điểm khuyến khích (nếu không có thì ghi số 0):</label>
+  <input type="number" id="dkk" min="0" max="10" step="0.01">
+
+  <label>Điểm ưu tiên (nếu không có thì ghi số 0):</label>
+  <input type="number" id="dut" min="0" max="10" step="0.01">
+
+  <button onclick="tinhDiem()">Tính điểm xét tốt nghiệp</button>
+
+  <div id="result"></div>
+
+  <div id="xetTN"></div>
+
+  <script>
+    function tinhDiem() {
+    const toan = parseFloat(document.getElementById("toan").value);
+    const van = parseFloat(document.getElementById("van").value);
+    const tc1 = parseFloat(document.getElementById("tc1").value);
+    const tc2 = parseFloat(document.getElementById("tc2").value);
+    const mienTC2 = document.getElementById("mienTC2").checked;
+
+    const tb10 = parseFloat(document.getElementById("tb10").value);
+    const tb11 = parseFloat(document.getElementById("tb11").value);
+    const tb12 = parseFloat(document.getElementById("tb12").value);
+    const dkk = parseFloat(document.getElementById("dkk").value);
+    const dut = parseFloat(document.getElementById("dut").value);
+
+    if (
+        [toan, van, tc1, tb10, tb11, tb12, dkk, dut].some(d => isNaN(d) || d < 0 || d > 10) ||
+        (!mienTC2 && (isNaN(tc2) || tc2 < 0 || tc2 > 10))
+    ) {
+        document.getElementById("result").innerText =
+        "Vui lòng nhập đúng tất cả các điểm (0 - 10).";
+        return;
+    }
+
+    const diemHB = (tb10 + tb11 * 2 + tb12 * 3) / 6;
+
+    let diemThi;
+    if (mienTC2) {
+        diemThi = (toan + van + tc1 + dkk) / 3;
+    } else {
+        diemThi = (toan + van + tc1 + tc2 + dkk) / 4;
+    }
+
+    const diemTN = (diemThi + diemHB) / 2 + dut;
+
+    document.getElementById("result").innerText =
+        "Điểm xét tốt nghiệp: " + diemTN.toFixed(2);
+
+    if (diemTN >= 5) {
+        document.getElementById("xetTN").innerText =
+        "Bạn đã đậu tốt nghiệp THPT, xin chúc mừng 🥳🥳";
+    } else {
+        document.getElementById("xetTN").innerText =
+        "Bạn đã rớt tốt nghiệp THPT, xin chia buồn 😭😭 Chúc bạn may mắn lần sau";
+    }
+    }
+
+    
+  </script>
+</body>
+</html>
