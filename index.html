@@ -126,7 +126,7 @@
     document.getElementById("result").innerText =
         "Điểm xét tốt nghiệp: " + diemTN.toFixed(2);
 
-    if (diemTN >= 5) {
+    if (diemTN >= 5 && toan > 1 && van > 1 && tc1 > 1 && tc2 > 1) {
         document.getElementById("xetTN").innerText =
         "Bạn đã đậu tốt nghiệp THPT, xin chúc mừng 🥳🥳";
     } else {
